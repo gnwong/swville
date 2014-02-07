@@ -4,7 +4,7 @@
  *    post.php files on somewhereville.com/gnw and constrains 
  *    the style of the files.
  *
- *  Copyright (C)  2013  George Wong
+ *  Copyright (C)  2013-2014  George Wong
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -191,6 +191,7 @@ public class Post {
   public boolean saveFile() {
     String saveString = "";
     
+    /*
     saveString += "<! BEGIN >\n<?php\n";
     saveString += "$update='" + infoBox.updateField.getText() + "';\n";
     saveString += "$postid='" + infoBox.pidField.getText() + "';\n";
@@ -201,9 +202,20 @@ public class Post {
     saveString += "<font size=\"5\">" + infoBox.titleField.getText() + "</font>\n";
     saveString += "<br><br>\n<hr width=\"80%\" align=\"left\">\n\n";
     saveString += mainField.getText();
-    saveString += "\n\n</font>\n";
+    saveString += "\n\n</font>\n";*/
     
-    JFileChooser saveChooser = new JFileChooser();
+    saveString += "<! BEGIN >\n<?php\n";
+    saveString += "$update='" + infoBox.updateField.getText() + "';\n";
+    saveString += "$postid='" + infoBox.pidField.getText() + "';\n";
+    saveString += "$pTitle='" + infoBox.titleField.getText() + "';\n";
+    saveString += "$length=" + infoBox.lengthField.getText() + ";\n";
+    saveString += "?>\n<! END >\n\n";
+    saveString += "<div class=\"texttitle\">" + infoBox.titleField.getText() + "</div>\n";
+    saveString += "<div class=\"textdate\"><?php echo $update; ?></div><br>\n\n";
+    saveString += mainField.getText();
+    saveString += "\n";
+    
+    JFileChooser saveChooser = new JFileChooser(System.getProperty("user.dir"));
     FileNameExtensionFilter filter = 
       new FileNameExtensionFilter("php/html", "php", "html");
     saveChooser.setFileFilter(filter);

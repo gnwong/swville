@@ -1,5 +1,5 @@
 /*
- *  Copyright (C)  2013  George Wong
+ *  Copyright (C)  2013-2014 George Wong
  *  GNU General Public License
  */
 
@@ -23,7 +23,7 @@ public class AboutBox {
     ab.setResizable(false);
     ab.setLayout(new BorderLayout());
     
-    JTextArea info = new JTextArea("\"Post.java\"\nCopyright (C) 2013 George Wong\n\nThis project is released under version 3 of the GNU General Public License, which can be found at http://www.gnu.org/licenses/.");
+    JTextArea info = new JTextArea("\"Post.java\"\nCopyright (C) 2013-2014 George Wong\n\nThis project is released under version 3 of the GNU General Public License, which can be found at http://www.gnu.org/licenses/.");
     info.setLineWrap(true);
     info.setWrapStyleWord(true);
     info.setMargin(new Insets(10,10,10,10));
