@@ -21,7 +21,9 @@
  */
 
 import java.io.Writer;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
@@ -176,13 +178,44 @@ public class Post {
                 "Cancel");
       if (ans==0) {
         saveFile();
+        mainField.setText("");
       } else if (ans==1) {
+        mainField.setText("");
       } else {
         return false;
       }
     }
     
-    // TODO 
+    JFileChooser openChooser = new JFileChooser(System.getProperty("user.dir"));
+    FileNameExtensionFilter filter = 
+      new FileNameExtensionFilter("php/html", "php", "html");
+    openChooser.setFileFilter(filter);
+    int retVal = openChooser.showOpenDialog(null);
+    if (retVal != JFileChooser.APPROVE_OPTION) {
+      return false;
+    }
+    
+    BufferedReader freader = null;
+    try {
+      freader = new BufferedReader(new FileReader(openChooser.getSelectedFile().getAbsolutePath()));
+      String line;
+      char lineCount = 1;
+      while ((line = freader.readLine()) != null) {
+        if (lineCount==3) infoBox.updateField.setText(line.substring(9,line.length()-2));
+        if (lineCount==4) infoBox.pidField.setText(line.substring(9,line.length()-2));
+        if (lineCount==5) infoBox.titleField.setText(line.substring(9,line.length()-2));
+        if (lineCount==6) infoBox.lengthField.setText(line.substring(9,line.length()-1));
+        if (lineCount<13) lineCount++;
+        if (lineCount>12) mainField.append(line + "\n");
+      }
+      mainField.setCaretPosition(0);
+    } catch (IOException e) {
+      // TODO
+    } finally {
+      try {
+        freader.close();
+      } catch (Exception e) {}
+    }
     
     return true;
   }
@@ -190,19 +223,6 @@ public class Post {
   // Save everything in the right format
   public boolean saveFile() {
     String saveString = "";
-    
-    /*
-    saveString += "<! BEGIN >\n<?php\n";
-    saveString += "$update='" + infoBox.updateField.getText() + "';\n";
-    saveString += "$postid='" + infoBox.pidField.getText() + "';\n";
-    saveString += "$pTitle='" + infoBox.titleField.getText() + "';\n";
-    saveString += "$length=" + infoBox.lengthField.getText() + ";\n";
-    saveString += "?>\n<! END >\n\n";
-    saveString += "<font face=\"Helvetica\" size=\"3\">\n<br>\n";
-    saveString += "<font size=\"5\">" + infoBox.titleField.getText() + "</font>\n";
-    saveString += "<br><br>\n<hr width=\"80%\" align=\"left\">\n\n";
-    saveString += mainField.getText();
-    saveString += "\n\n</font>\n";*/
     
     saveString += "<! BEGIN >\n<?php\n";
     saveString += "$update='" + infoBox.updateField.getText() + "';\n";
@@ -251,7 +271,6 @@ public class Post {
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setMinimumSize(new Dimension(500,650));
     frame.setJMenuBar(me.MainMenu());
-    frame.setResizable(false);
     frame.validate();
     frame.setLocationRelativeTo(null);
     frame.setLayout(new BorderLayout());
